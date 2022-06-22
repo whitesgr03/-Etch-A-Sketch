@@ -1,12 +1,29 @@
+function randomInteger(min, max) {
+  let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+}
 
 function changeColor() {
-    const originColor = window.getComputedStyle(this)['backgroundColor']
+    const brightness = window.getComputedStyle(this)['filter'].replace(/^\D+|\D+$/g, "")
 
-    if (originColor === 'rgb(0, 0, 0)') {
-        this.style['background-color'] = 'rgb(255, 255, 255)';
-    } else {
-        this.style['background-color'] = 'rgb(0, 0, 0)';
+    if (+brightness === 0) {
+        return
     }
+
+    const newColor = `rgb(${randomInteger(0, 255)}, ${randomInteger(0, 255)}, ${randomInteger(0, 255)})`;
+
+    const newBrightness = `brightness(${+(brightness - 0.1).toFixed(2)})`
+
+    this.style['background-color'] = newColor;
+    this.style['filter'] = newBrightness;
+
+    // const originColor = window.getComputedStyle(this)['backgroundColor']
+
+    // if (originColor === 'rgb(0, 0, 0)') {
+    //     this.style['background-color'] = 'rgb(255, 255, 255)';
+    // } else {
+    //     this.style['background-color'] = 'rgb(0, 0, 0)';
+    // }
 }
 
 function createSquare(grid, range, maxHeight) {
@@ -26,7 +43,7 @@ function createSquare(grid, range, maxHeight) {
         wrap.appendChild(square);
 
         square.addEventListener('mouseover', changeColor);
-        square.addEventListener('mouseout', changeColor);
+        // square.addEventListener('mouseout', changeColor);
         }
     }
 }
