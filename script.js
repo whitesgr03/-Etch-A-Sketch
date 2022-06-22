@@ -9,7 +9,7 @@ function changeColor() {
     }
 }
 
-function createSquare(range, maxHeight) {
+function createSquare(grid, range, maxHeight) {
     for (let i = 0; i < range; i++) {
     const wrap = document.createElement('div');
 
@@ -31,15 +31,43 @@ function createSquare(range, maxHeight) {
     }
 }
 
+function createGrid(rang = 2) {
+    if (document.querySelector('.grid')) {
+        document.body.removeChild(document.querySelector('.grid'))
+    }
 
-const grid = document.createElement('div');
-grid.classList = 'grid';
+    const grid = document.createElement('div');
+    grid.classList = 'grid';
 
-document.body.appendChild(grid);
+    document.body.appendChild(grid);
 
-const gridRange = 2;
-const gridHeight = parseInt(window.getComputedStyle(grid)['height']);
-const wrapHeight = Math.trunc(gridHeight / gridRange);
+    const gridRange = rang; // 網格 幾乘幾
+    const gridHeight = parseInt(window.getComputedStyle(grid)['height']);
+    const wrapHeight = gridHeight / gridRange; // 計算每個 wrap 的高度
 
-createSquare(gridRange, wrapHeight)
+    createSquare(grid, gridRange, wrapHeight)
 
+}
+
+function editGrid() {
+    let newRage = null;
+
+    do {
+        newRage = +prompt('Input number of squares per side for the new grid. (Max = 100)')
+    }
+    while (!isFinite(newRage) || newRage > 100)
+    if (!newRage) return
+
+    createGrid(newRage)
+}
+
+
+const button = document.createElement('button');
+button.textContent = 'Edit grid range'
+button.classList = 'top_button'
+
+document.body.appendChild(button);
+
+button.addEventListener('click', editGrid)
+
+createGrid();
