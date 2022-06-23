@@ -3,27 +3,65 @@ function randomInteger(min, max) {
     return Math.floor(rand);
 }
 
-function changeColor() {
-    const brightness = window.getComputedStyle(this)['filter'].replace(/^\D+|\D+$/g, "")
+function rgbToHsl(rgb){
 
-    if (+brightness === 0) {
-        return
+    let [r, g, b] = rgb.map(color => color / 255);
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+
+    let h = 0;
+    let s = 0;
+    let l = (max + min) / 2;
+
+    if (max !== min) {
+        const d = max - min;
+        s = d / (1 - Math.abs(2 * l - 1));
+        switch(max){
+            case r:
+                h = (g - b) / d % 6;
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
     }
 
-    const newColor = `rgb(${randomInteger(0, 255)}, ${randomInteger(0, 255)}, ${randomInteger(0, 255)})`;
+    h = Math.round(h * 60);
+        
+    if (h < 0)
+        h += 360;
 
-    const newBrightness = `brightness(${+(brightness - 0.1).toFixed(2)})`
+    s = Math.round((s * 100));
+    l = Math.round((l * 100));
 
-    this.style['background-color'] = newColor;
-    this.style['filter'] = newBrightness;
+    return [h, s, l];
+}
 
-    // const originColor = window.getComputedStyle(this)['backgroundColor']
+function changeColor() {
+    const rgb = window.getComputedStyle(this)['background-color'];
 
-    // if (originColor === 'rgb(0, 0, 0)') {
-    //     this.style['background-color'] = 'rgb(255, 255, 255)';
-    // } else {
-    //     this.style['background-color'] = 'rgb(0, 0, 0)';
-    // }
+    if (rgb === 'rgb(0, 0, 0)' ) {
+        const newColor = `hsl(${randomInteger(0, 360)}, ${randomInteger(0, 100)}%, 50%)`;
+        this.style['background-color'] = newColor;
+        return
+    }
+    
+    const rgbCode = rgb.match(/\d+/g, "");
+    const [Hue, Saturation, Lightness] = rgbToHsl(rgbCode)
+
+    if (Lightness > 0) {
+        const newColor = `hsl(${Hue}, ${Saturation}%, ${Lightness - 5}%)`;
+        this.style['background-color'] = newColor 
+    }
+
+    if (Lightness === 5) {
+        this.removeEventListener('mouseover', changeColor);
+    }
+
 }
 
 function createSquare(grid, range, maxHeight) {
@@ -43,7 +81,6 @@ function createSquare(grid, range, maxHeight) {
         wrap.appendChild(square);
 
         square.addEventListener('mouseover', changeColor);
-        // square.addEventListener('mouseout', changeColor);
         }
     }
 }
