@@ -115,13 +115,20 @@ function editGrid() {
     createGrid(newRage)
 }
 
+function createEditButton() {
+    // 建立一個 button 元素
+    const button = document.createElement('button');
+    // button 加上文字
+    button.textContent = 'Edit row and column'
+    // button 加上 class
+    button.classList = 'editButton'
+    // 將 button 元素插入到 body 中
+    document.body.appendChild(button);
+    // 使用者點擊時執行編輯網格
+    button.addEventListener('click', editGrid)
+}
 
-const button = document.createElement('button');
-button.textContent = 'Edit grid range'
-button.classList = 'top_button'
-
-document.body.appendChild(button);
-
-button.addEventListener('click', editGrid)
+// 建立編輯按鈕
+createEditButton();
 
 createGrid();
