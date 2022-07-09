@@ -4,10 +4,11 @@ function randomInteger(min, max) {
 }
 
 function rgbToHsl(rgb){
-
+    // 建立 三個變數儲存 RGB
     let [r, g, b] = rgb.map(color => color / 255);
-
+    // 建立 max 儲存最大的值
     const max = Math.max(r, g, b);
+    // 建立 min 儲存最小的值
     const min = Math.min(r, g, b);
 
     let h = 0;
