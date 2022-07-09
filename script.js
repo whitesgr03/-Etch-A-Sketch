@@ -64,55 +64,19 @@ function changeColor() {
 
 }
 
-function createSquare(grid, range, maxHeight) {
-    for (let i = 0; i < range; i++) {
-    const wrap = document.createElement('div');
-
-    wrap.classList = 'wrap';
-    wrap.style = `height: ${maxHeight}px;`;
-
-    grid.appendChild(wrap);
-
-    for (let i = 0; i < range; i++) {
-        const square = document.createElement('div');
-
-        square.classList = 'square';
-
-        wrap.appendChild(square);
-
-        square.addEventListener('mouseover', changeColor);
-        }
-    }
-}
-
-function createGrid(rang = 2) {
-    if (document.querySelector('.grid')) {
-        document.body.removeChild(document.querySelector('.grid'))
-    }
-
-    const grid = document.createElement('div');
-    grid.classList = 'grid';
-
-    document.body.appendChild(grid);
-
-    const gridRange = rang; // 網格 幾乘幾
-    const gridHeight = parseInt(window.getComputedStyle(grid)['height']);
-    const wrapHeight = gridHeight / gridRange; // 計算每個 wrap 的高度
-
-    createSquare(grid, gridRange, wrapHeight)
-
-}
-
 function editGrid() {
-    let newRage = null;
-
+    // 建立一個變數來儲存新的網格範圍
+    let row = null;
+    // 向使用者詢問網格大小
     do {
-        newRage = +prompt('Input number of squares per side for the new grid. (Max = 100)')
+        row = Math.trunc(prompt('Enter the row of the new grid. (Max = 100)'))
     }
-    while (!isFinite(newRage) || newRage > 100)
-    if (!newRage) return
-
-    createGrid(newRage)
+    // 如果輸入的不是數字或大於 100 就重新詢問
+    while (!isFinite(row) || row > 100)
+    // 如果取消則停止
+    if (!row) return
+    // 使用新的網格大小重新建立主要網格
+    createGrid(row)
 }
 
 function createEditButton() {
