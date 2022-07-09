@@ -6,7 +6,7 @@ body {
     align-items: center;
 }
 
-.top_button {
+.editButton {
     background-color: rgb(255, 0, 0);
     margin-bottom: 50px;
     border-radius: 10px;
@@ -19,7 +19,7 @@ body {
     height: 500px;
 }
 
-.wrap {
+.row {
     display: flex;
     flex: auto;
 }
