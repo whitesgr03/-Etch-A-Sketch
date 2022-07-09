@@ -41,27 +41,28 @@ function rgbToHsl(rgb){
     return [h, s, l];
 }
 
-function changeColor() {
+function changeBGC() {
+    // 獲取矩形元素 bgc 屬性
     const rgb = window.getComputedStyle(this)['background-color'];
-
+    // 矩形未變更顏色時隨機變更顏色
     if (rgb === 'rgb(0, 0, 0)' ) {
         const newColor = `hsl(${randomInteger(0, 360)}, ${randomInteger(0, 100)}%, 50%)`;
         this.style['background-color'] = newColor;
         return
     }
-    
+    // 建立一個儲存 rgb 三項數值的變數
     const rgbCode = rgb.match(/\d+/g, "");
+    // 將 rgb 轉換成 hsl
     const [Hue, Saturation, Lightness] = rgbToHsl(rgbCode)
-
-    if (Lightness > 0) {
+    // 亮度不是 0 的時候降低亮度
+    if (Lightness >= 5) {
         const newColor = `hsl(${Hue}, ${Saturation}%, ${Lightness - 5}%)`;
         this.style['background-color'] = newColor 
     }
-
-    if (Lightness === 5) {
-        this.removeEventListener('mouseover', changeColor);
+    // 亮度是 0 的時候移除監聽
+    if (Lightness - 5 === 0) {
+        this.removeEventListener('mouseover', changeBGC);
     }
-
 }
 
 function editGrid() {
