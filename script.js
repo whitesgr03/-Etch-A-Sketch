@@ -1,4 +1,5 @@
 function randomInteger(min, max) {
+    // 建立 rand 儲存相同機率的隨機數字
   let rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
 }
